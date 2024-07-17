@@ -41,10 +41,14 @@ const char *country_code = "{Your_country_code}";
 
 ### Configure thingsboard
 
-Before we config, we need to know access token of `Thingsboard`.
+Before we config code, we need to create device on `Thingsboard`.
 
-1. Go to Thingsboard device.
-2. Click on `Copy access token`.
+1. Go to Thingsboard.
+2. Click `Entities`->`Device`.
+3. Create new device.
+4. Click on `Copy access token`.
+
+Then we will config the code.
 
 ```cpp
 const char *mqtt_server = "{Your_thingsboard_server}";
@@ -56,3 +60,5 @@ const char *mqtt_token = "{Your_access_token}";
 1. Go to this path `".\\esp_weather_to_thingsboard\\src\\main.cpp"`
 2. Connect ESP32 and your computer with Upload cable.
 3. Just click upload.
+
+After upload code to ESP32 if you want to check result, go to your device in thingsboard and then click `latest telemetry`.
