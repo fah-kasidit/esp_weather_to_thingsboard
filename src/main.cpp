@@ -1,20 +1,22 @@
+#define VERSION "1.0.0"
+
 #include <Arduino.h>
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
 
-const char *ssid = "Home-2";
-const char *password = "333555679";
-
-// MQTT settings
-const char *mqtt_server = "143.198.195.172";
-const char *mqtt_token = "i6hqZKbqWYxyHJVawiCy";
+const char *ssid = "StayTab";
+const char *password = "        ";
 
 // HTTP open_weather settings
 const char *API_KEY = "017324be308ad0a6689256c147b5aeee";
 const char *city_name = "Suan Luang";
 const char *country_code = "TH";
+
+// MQTT settings
+const char *mqtt_server = "143.198.195.172";
+const char *mqtt_token = "i6hqZKbqWYxyHJVawiCy";
 
 struct weather_data
 {
@@ -148,7 +150,7 @@ void fetch_data(void *pvParameters)
       Serial.println("WiFi Disconnected");
       connect_wifi();
     }
-    vTaskDelay(1000 * 1 / portTICK_PERIOD_MS); // 1000 milisec * 60
+    vTaskDelay(1000 * 60 / portTICK_PERIOD_MS); // 1000 milisec * 60
   }
 }
 
