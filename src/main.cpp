@@ -1,4 +1,4 @@
-#define VERSION "1.0.0"
+#define VERSION "1.0.1"
 
 #include <Arduino.h>
 #include <WiFi.h>
@@ -6,8 +6,8 @@
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
 
-const char *ssid = "StayTab";
-const char *password = "        ";
+const char *ssid = "NDRS-Wongsawang";
+const char *password = "ndrs_2010";
 
 // HTTP open_weather settings
 const char *API_KEY = "017324be308ad0a6689256c147b5aeee";
@@ -39,13 +39,13 @@ struct weather_data
 };
 
 QueueHandle_t queues;
+SemaphoreHandle_t queueMutex;
 
 TaskHandle_t fetch;
 TaskHandle_t push;
 
-char url[256];
-String payload_input;
-String payload_output;
+char url[128];
+char payload[1024];
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -78,7 +78,7 @@ void connect_mqtt()
     {
       Serial.print("failed, rc=");
       Serial.print(client.state());
-      Serial.println(" try again in 1 seconds");
+      Serial.println(" try again in 1 second");
       delay(1000);
     }
   }
@@ -87,28 +87,28 @@ void connect_mqtt()
 void build_request_url()
 {
   snprintf(url, sizeof(url), "http://api.openweathermap.org/data/2.5/weather?q=%s,%s&APPID=%s", city_name, country_code, API_KEY);
-  // Serial.println(url);
+  Serial.println("\n" + String(url) + "\n");
 }
 
 void fetch_data(void *pvParameters)
 {
+  weather_data input_data;
+  DynamicJsonDocument doc(1024);
+  HTTPClient http;
+
   for (;;)
   {
     if (WiFi.status() == WL_CONNECTED)
     {
-      weather_data input_data;
-      HTTPClient http;
       http.begin(url);
       http.addHeader("Content-Type", "application/json");
 
       if (http.GET() > 0)
       {
-        payload_input = http.getString();
-        // Serial.println("Response payload: " + payload);
+        snprintf(payload, sizeof(payload), (http.getString()).c_str());
+        // Serial.println("Response payload: " + String(payload));
 
-        // Get all data
-        DynamicJsonDocument doc(1024);
-        deserializeJson(doc, payload_input);
+        deserializeJson(doc, payload);
 
         input_data.city = doc["name"].as<String>();
         input_data.country = doc["sys"]["country"].as<String>();
@@ -123,8 +123,8 @@ void fetch_data(void *pvParameters)
         input_data.rain = doc.containsKey("rain") ? doc["rain"]["1h"].as<String>() : "0";
         input_data.clouds = doc["clouds"]["all"].as<String>();
 
-        // Serial.println("City: " + input_data.City);
-        // Serial.println("Country: " + input_data.Country);
+        // Serial.println("City: " + input_data.city);
+        // Serial.println("Country: " + input_data.country);
         // Serial.println("Weather: " + input_data.weather);
         // Serial.println("Temperature: " + input_data.temp + " °C");
         // Serial.println("Feels Like: " + input_data.temp_like + " °C");
@@ -136,11 +136,16 @@ void fetch_data(void *pvParameters)
         // Serial.println("Rain (1h): " + input_data.rain + " mm");
         // Serial.println("Cloudiness: " + input_data.clouds + " %\n");
 
-        xQueueSend(queues, &input_data, portMAX_DELAY);
+        if (xSemaphoreTake(queueMutex, portMAX_DELAY) == pdTRUE)
+        {
+          xQueueSend(queues, &input_data, portMAX_DELAY);
+          Serial.println("Fetch data");
+          xSemaphoreGive(queueMutex);
+        }
+        vTaskDelay(1000 * 60 / portTICK_PERIOD_MS);
       }
       else
       {
-        // url error
         Serial.println("Error on HTTP request");
       }
       http.end();
@@ -150,7 +155,6 @@ void fetch_data(void *pvParameters)
       Serial.println("WiFi Disconnected");
       connect_wifi();
     }
-    vTaskDelay(1000 * 60 / portTICK_PERIOD_MS); // 1000 milisec * 60
   }
 }
 
@@ -161,17 +165,21 @@ void push_data(void *pvParameters)
   {
     if (client.connected())
     {
-      if (xQueueReceive(queues, &output_data, portMAX_DELAY))
+      if (uxQueueMessagesWaiting(queues) > 0)
       {
-        payload_output = "{\"city\": \"" + output_data.city + "\", \"country\": \"" + output_data.country + "\", \"Weather\": \"" + output_data.weather +
-                         "\", \"temp\": \"" + output_data.temp + "\", \"temp_like\": \"" + output_data.temp_like + "\", \"pressure\": \"" + output_data.pressure +
-                         "\"}";
-        client.publish("v1/devices/me/telemetry", payload_output.c_str(), 2);
+        if (xSemaphoreTake(queueMutex, portMAX_DELAY) == pdTRUE)
+        {
+          if (xQueueReceive(queues, &output_data, portMAX_DELAY))
+          {
+            snprintf(payload, sizeof(payload), "{\"city\": \"%s\", \"country\": \"%s\", \"Weather\": \"%s\", \"temp\": \"%s\", \"temp_like\": \"%s\", \"pressure\": \"%s\"}", output_data.city, output_data.country, output_data.weather, output_data.temp, output_data.temp_like, output_data.pressure);
+            client.publish("v1/devices/me/telemetry", payload, 2);
 
-        payload_output = "{\"humidity\": \"" + output_data.humidity + "\", \"visibility\": \"" + output_data.visibility + "\", \"wind_speed\": \"" + output_data.wind_speed +
-                         "\", \"wind_deg\": \"" + output_data.wind_deg + "\", \"rain\": \"" + output_data.rain + "\", \"clouds\": \"" + output_data.clouds +
-                         "\"}";
-        client.publish("v1/devices/me/telemetry", payload_output.c_str(), 2);
+            snprintf(payload, sizeof(payload), "{\"humidity\": \"%s\", \"visibility\": \"%s\", \"wind_speed\": \"%s\", \"wind_deg\": \"%s\", \"rain\": \"%s\", \"clouds\": \"%s\"}", output_data.humidity, output_data.visibility, output_data.wind_speed, output_data.wind_deg, output_data.rain, output_data.clouds);
+            client.publish("v1/devices/me/telemetry", payload, 2);
+          }
+          Serial.println("Push data");
+          xSemaphoreGive(queueMutex);
+        }
       }
     }
     else
@@ -179,21 +187,22 @@ void push_data(void *pvParameters)
       Serial.println("MQTT Disconnected");
       connect_mqtt();
     }
+    vTaskDelay(100 / portTICK_PERIOD_MS);
   }
 }
 
 void setup()
 {
   Serial.begin(115200);
+  queueMutex = xSemaphoreCreateMutex();
   queues = xQueueCreate(10, sizeof(weather_data));
 
   connect_wifi();
   connect_mqtt();
-
   build_request_url();
 
-  xTaskCreatePinnedToCore(fetch_data, "Fetch Data", 20000, NULL, 2, &fetch, 0);
-  xTaskCreatePinnedToCore(push_data, "push Data", 20000, NULL, 1, &push, 1);
+  xTaskCreatePinnedToCore(fetch_data, "Fetch Data", 4096, NULL, 1, &fetch, 0);
+  xTaskCreatePinnedToCore(push_data, "Push Data", 4096, NULL, 1, &push, 1);
 }
 
 void loop()
