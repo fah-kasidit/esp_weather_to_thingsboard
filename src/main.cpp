@@ -9,12 +9,10 @@
 const char *ssid = "NDRS-Wongsawang";
 const char *password = "ndrs_2010";
 
-// HTTP open_weather settings
 const char *API_KEY = "017324be308ad0a6689256c147b5aeee";
 const char *city_name = "Suan Luang";
 const char *country_code = "TH";
 
-// MQTT settings
 const char *mqtt_server = "143.198.195.172";
 const char *mqtt_token = "i6hqZKbqWYxyHJVawiCy";
 
@@ -40,7 +38,6 @@ struct weather_data
 
 QueueHandle_t queues;
 SemaphoreHandle_t queueMutex;
-
 TaskHandle_t fetch;
 TaskHandle_t push;
 
@@ -50,6 +47,11 @@ char payload[1024];
 WiFiClient espClient;
 PubSubClient client(espClient);
 
+/**
+ * @brief Funtion for connect to wifi.
+ *
+ * Using this funtion when want to connect to wifi or new connect to wifi.
+ */
 void connect_wifi()
 {
   // connect wifi
@@ -62,6 +64,11 @@ void connect_wifi()
   Serial.println("Connected to WiFi");
 }
 
+/**
+ * @brief Funtion for connect to MQTT server.
+ *
+ * Using this funtion when want to connect to mqtt server.
+ */
 void connect_mqtt()
 {
   // connect mqtt
@@ -84,12 +91,26 @@ void connect_mqtt()
   }
 }
 
+/**
+ * @brief Funtion for build url.
+ *
+ * Using this funtion when want to build http url for request data from openweathermap.
+ */
 void build_request_url()
 {
   snprintf(url, sizeof(url), "http://api.openweathermap.org/data/2.5/weather?q=%s,%s&APPID=%s", city_name, country_code, API_KEY);
   Serial.println("\n" + String(url) + "\n");
 }
 
+/**
+ * @brief Funtion for fetch data from the builded url.
+ *
+ * Using this funtion when want to fetch new data.
+ * 
+ * @param pvParameters Pointer to the parameters required for fetching data.
+ *                     This can be used to pass additional context or configuration
+ *                     needed by the function.
+ */
 void fetch_data(void *pvParameters)
 {
   weather_data input_data;
@@ -158,6 +179,14 @@ void fetch_data(void *pvParameters)
   }
 }
 
+/**
+ * @brief Funtion for push data.
+ *
+ * Using this funtion when want to push data to mqtt server.
+ * @param pvParameters Pointer to the parameters required for pushing data.
+ *                     This can be used to pass additional context or configuration
+ *                     needed by the function.
+ */
 void push_data(void *pvParameters)
 {
   weather_data output_data;

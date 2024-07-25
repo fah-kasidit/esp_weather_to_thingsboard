@@ -1,0 +1,248 @@
+\doxysection{src/main.cpp File Reference}
+\hypertarget{main_8cpp}{}\label{main_8cpp}\index{src/main.cpp@{src/main.cpp}}
+{\ttfamily \#include $<$Arduino.\+h$>$}\newline
+{\ttfamily \#include $<$Wi\+Fi.\+h$>$}\newline
+{\ttfamily \#include $<$HTTPClient.\+h$>$}\newline
+{\ttfamily \#include $<$Pub\+Sub\+Client.\+h$>$}\newline
+{\ttfamily \#include $<$Arduino\+Json.\+h$>$}\newline
+Include dependency graph for main.\+cpp\+:
+% FIG 0
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structweather__data}{weather\+\_\+data}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{main_8cpp_a1c6d5de492ac61ad29aec7aa9a436bbf}{VERSION}}~"{}1.\+0.\+1"{}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+Pub\+Sub\+Client \mbox{\hyperlink{main_8cpp_aee63e84c606cfaefce454689113c636c}{client}} (\mbox{\hyperlink{main_8cpp_abd77e757e4b3bb6f1e4b42b21ea9e040}{esp\+Client}})
+\item 
+void \mbox{\hyperlink{main_8cpp_a4d8c615b1da57ec2bd5f1e6cbba54fc2}{connect\+\_\+wifi}} ()
+\begin{DoxyCompactList}\small\item\em Funtion for connect to wifi. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_a8b3f646a8b4e3a6de1abd990c6211021}{connect\+\_\+mqtt}} ()
+\begin{DoxyCompactList}\small\item\em Funtion for connect to MQTT server. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_a331b8b9102c5e4e5415cee0ef6e32a81}{build\+\_\+request\+\_\+url}} ()
+\begin{DoxyCompactList}\small\item\em Funtion for build url. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_aaac620266e7989f5e70d882e1bd4a68a}{fetch\+\_\+data}} (void \texorpdfstring{$\ast$}{*}pv\+Parameters)
+\begin{DoxyCompactList}\small\item\em Funtion for fetch data from the builded url. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_a6ba48b53ba4987408eef8a7d75e2727c}{push\+\_\+data}} (void \texorpdfstring{$\ast$}{*}pv\+Parameters)
+\begin{DoxyCompactList}\small\item\em Funtion for push data. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8cpp_a4fc01d736fe50cf5b977f755b675f11d}{setup}} ()
+\item 
+void \mbox{\hyperlink{main_8cpp_afe461d27b9c48d5921c00d521181f12f}{loop}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{main_8cpp_a587ba0cb07f02913598610049a3bbb79}{ssid}} = "{}NDRS-\/Wongsawang"{}
+\item 
+const char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{main_8cpp_aa4a2ebcb494493f648ae1e6975672575}{password}} = "{}ndrs\+\_\+2010"{}
+\item 
+const char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{main_8cpp_a43f17f0040b3cfe24593539b6353faa5}{API\+\_\+\+KEY}} = "{}017324be308ad0a6689256c147b5aeee"{}
+\item 
+const char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{main_8cpp_ad6a0f01d1518938bcf271d293eb48bb4}{city\+\_\+name}} = "{}Suan Luang"{}
+\item 
+const char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{main_8cpp_a9b47add2020fa62b4acda276208fa64b}{country\+\_\+code}} = "{}TH"{}
+\item 
+const char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{main_8cpp_ae62fa8557ef4586408dcbe2f1a09e839}{mqtt\+\_\+server}} = "{}143.\+198.\+195.\+172"{}
+\item 
+const char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{main_8cpp_a23a3cd757380bae1fdb4e30e19ea9b17}{mqtt\+\_\+token}} = "{}i6hq\+ZKbq\+WYxy\+HJVawi\+Cy"{}
+\item 
+Queue\+Handle\+\_\+t \mbox{\hyperlink{main_8cpp_a0612135e618b46403ca6b9a6e996093f}{queues}}
+\item 
+Semaphore\+Handle\+\_\+t \mbox{\hyperlink{main_8cpp_a15966c750c9fb6b2092649b233d249c7}{queue\+Mutex}}
+\item 
+Task\+Handle\+\_\+t \mbox{\hyperlink{main_8cpp_ae62253279b22a4554f467dd9559dc291}{fetch}}
+\item 
+Task\+Handle\+\_\+t \mbox{\hyperlink{main_8cpp_a8d01d3bd85cacd97e6f8656a54fd9cc4}{push}}
+\item 
+char \mbox{\hyperlink{main_8cpp_a153935e13b871590c5521d1b258d017f}{url}} \mbox{[}128\mbox{]}
+\item 
+char \mbox{\hyperlink{main_8cpp_a51d50c2aba3afca733573a59c16cc9bd}{payload}} \mbox{[}1024\mbox{]}
+\item 
+Wi\+Fi\+Client \mbox{\hyperlink{main_8cpp_abd77e757e4b3bb6f1e4b42b21ea9e040}{esp\+Client}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{main_8cpp_a1c6d5de492ac61ad29aec7aa9a436bbf}\index{main.cpp@{main.cpp}!VERSION@{VERSION}}
+\index{VERSION@{VERSION}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{VERSION}{VERSION}}
+{\footnotesize\ttfamily \label{main_8cpp_a1c6d5de492ac61ad29aec7aa9a436bbf} 
+\#define VERSION~"{}1.\+0.\+1"{}}
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{main_8cpp_a331b8b9102c5e4e5415cee0ef6e32a81}\index{main.cpp@{main.cpp}!build\_request\_url@{build\_request\_url}}
+\index{build\_request\_url@{build\_request\_url}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{build\_request\_url()}{build\_request\_url()}}
+{\footnotesize\ttfamily \label{main_8cpp_a331b8b9102c5e4e5415cee0ef6e32a81} 
+void build\+\_\+request\+\_\+url (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Funtion for build url. 
+
+Using this funtion when want to build http url for request data from openweathermap. \Hypertarget{main_8cpp_aee63e84c606cfaefce454689113c636c}\index{main.cpp@{main.cpp}!client@{client}}
+\index{client@{client}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{client()}{client()}}
+{\footnotesize\ttfamily \label{main_8cpp_aee63e84c606cfaefce454689113c636c} 
+Pub\+Sub\+Client client (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{main_8cpp_abd77e757e4b3bb6f1e4b42b21ea9e040}{esp\+Client}}}]{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{main_8cpp_a8b3f646a8b4e3a6de1abd990c6211021}\index{main.cpp@{main.cpp}!connect\_mqtt@{connect\_mqtt}}
+\index{connect\_mqtt@{connect\_mqtt}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{connect\_mqtt()}{connect\_mqtt()}}
+{\footnotesize\ttfamily \label{main_8cpp_a8b3f646a8b4e3a6de1abd990c6211021} 
+void connect\+\_\+mqtt (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Funtion for connect to MQTT server. 
+
+Using this funtion when want to connect to mqtt server. \Hypertarget{main_8cpp_a4d8c615b1da57ec2bd5f1e6cbba54fc2}\index{main.cpp@{main.cpp}!connect\_wifi@{connect\_wifi}}
+\index{connect\_wifi@{connect\_wifi}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{connect\_wifi()}{connect\_wifi()}}
+{\footnotesize\ttfamily \label{main_8cpp_a4d8c615b1da57ec2bd5f1e6cbba54fc2} 
+void connect\+\_\+wifi (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Funtion for connect to wifi. 
+
+Using this funtion when want to connect to wifi or new connect to wifi. \Hypertarget{main_8cpp_aaac620266e7989f5e70d882e1bd4a68a}\index{main.cpp@{main.cpp}!fetch\_data@{fetch\_data}}
+\index{fetch\_data@{fetch\_data}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{fetch\_data()}{fetch\_data()}}
+{\footnotesize\ttfamily \label{main_8cpp_aaac620266e7989f5e70d882e1bd4a68a} 
+void fetch\+\_\+data (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{pv\+Parameters}{}\end{DoxyParamCaption})}
+
+
+
+Funtion for fetch data from the builded url. 
+
+Using this funtion when want to fetch new data.
+
+
+\begin{DoxyParams}{Parameters}
+{\em pv\+Parameters} & Pointer to the parameters required for fetching data. This can be used to pass additional context or configuration needed by the function. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{main_8cpp_afe461d27b9c48d5921c00d521181f12f}\index{main.cpp@{main.cpp}!loop@{loop}}
+\index{loop@{loop}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{loop()}{loop()}}
+{\footnotesize\ttfamily \label{main_8cpp_afe461d27b9c48d5921c00d521181f12f} 
+void loop (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{main_8cpp_a6ba48b53ba4987408eef8a7d75e2727c}\index{main.cpp@{main.cpp}!push\_data@{push\_data}}
+\index{push\_data@{push\_data}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{push\_data()}{push\_data()}}
+{\footnotesize\ttfamily \label{main_8cpp_a6ba48b53ba4987408eef8a7d75e2727c} 
+void push\+\_\+data (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{pv\+Parameters}{}\end{DoxyParamCaption})}
+
+
+
+Funtion for push data. 
+
+Using this funtion when want to push data to mqtt server. 
+\begin{DoxyParams}{Parameters}
+{\em pv\+Parameters} & Pointer to the parameters required for pushing data. This can be used to pass additional context or configuration needed by the function. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{main_8cpp_a4fc01d736fe50cf5b977f755b675f11d}\index{main.cpp@{main.cpp}!setup@{setup}}
+\index{setup@{setup}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{setup()}{setup()}}
+{\footnotesize\ttfamily \label{main_8cpp_a4fc01d736fe50cf5b977f755b675f11d} 
+void setup (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{main_8cpp_a43f17f0040b3cfe24593539b6353faa5}\index{main.cpp@{main.cpp}!API\_KEY@{API\_KEY}}
+\index{API\_KEY@{API\_KEY}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{API\_KEY}{API\_KEY}}
+{\footnotesize\ttfamily \label{main_8cpp_a43f17f0040b3cfe24593539b6353faa5} 
+const char\texorpdfstring{$\ast$}{*} API\+\_\+\+KEY = "{}017324be308ad0a6689256c147b5aeee"{}}
+
+\Hypertarget{main_8cpp_ad6a0f01d1518938bcf271d293eb48bb4}\index{main.cpp@{main.cpp}!city\_name@{city\_name}}
+\index{city\_name@{city\_name}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{city\_name}{city\_name}}
+{\footnotesize\ttfamily \label{main_8cpp_ad6a0f01d1518938bcf271d293eb48bb4} 
+const char\texorpdfstring{$\ast$}{*} city\+\_\+name = "{}Suan Luang"{}}
+
+\Hypertarget{main_8cpp_a9b47add2020fa62b4acda276208fa64b}\index{main.cpp@{main.cpp}!country\_code@{country\_code}}
+\index{country\_code@{country\_code}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{country\_code}{country\_code}}
+{\footnotesize\ttfamily \label{main_8cpp_a9b47add2020fa62b4acda276208fa64b} 
+const char\texorpdfstring{$\ast$}{*} country\+\_\+code = "{}TH"{}}
+
+\Hypertarget{main_8cpp_abd77e757e4b3bb6f1e4b42b21ea9e040}\index{main.cpp@{main.cpp}!espClient@{espClient}}
+\index{espClient@{espClient}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{espClient}{espClient}}
+{\footnotesize\ttfamily \label{main_8cpp_abd77e757e4b3bb6f1e4b42b21ea9e040} 
+Wi\+Fi\+Client esp\+Client}
+
+\Hypertarget{main_8cpp_ae62253279b22a4554f467dd9559dc291}\index{main.cpp@{main.cpp}!fetch@{fetch}}
+\index{fetch@{fetch}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{fetch}{fetch}}
+{\footnotesize\ttfamily \label{main_8cpp_ae62253279b22a4554f467dd9559dc291} 
+Task\+Handle\+\_\+t fetch}
+
+\Hypertarget{main_8cpp_ae62fa8557ef4586408dcbe2f1a09e839}\index{main.cpp@{main.cpp}!mqtt\_server@{mqtt\_server}}
+\index{mqtt\_server@{mqtt\_server}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{mqtt\_server}{mqtt\_server}}
+{\footnotesize\ttfamily \label{main_8cpp_ae62fa8557ef4586408dcbe2f1a09e839} 
+const char\texorpdfstring{$\ast$}{*} mqtt\+\_\+server = "{}143.\+198.\+195.\+172"{}}
+
+\Hypertarget{main_8cpp_a23a3cd757380bae1fdb4e30e19ea9b17}\index{main.cpp@{main.cpp}!mqtt\_token@{mqtt\_token}}
+\index{mqtt\_token@{mqtt\_token}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{mqtt\_token}{mqtt\_token}}
+{\footnotesize\ttfamily \label{main_8cpp_a23a3cd757380bae1fdb4e30e19ea9b17} 
+const char\texorpdfstring{$\ast$}{*} mqtt\+\_\+token = "{}i6hq\+ZKbq\+WYxy\+HJVawi\+Cy"{}}
+
+\Hypertarget{main_8cpp_aa4a2ebcb494493f648ae1e6975672575}\index{main.cpp@{main.cpp}!password@{password}}
+\index{password@{password}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{password}{password}}
+{\footnotesize\ttfamily \label{main_8cpp_aa4a2ebcb494493f648ae1e6975672575} 
+const char\texorpdfstring{$\ast$}{*} password = "{}ndrs\+\_\+2010"{}}
+
+\Hypertarget{main_8cpp_a51d50c2aba3afca733573a59c16cc9bd}\index{main.cpp@{main.cpp}!payload@{payload}}
+\index{payload@{payload}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{payload}{payload}}
+{\footnotesize\ttfamily \label{main_8cpp_a51d50c2aba3afca733573a59c16cc9bd} 
+char payload\mbox{[}1024\mbox{]}}
+
+\Hypertarget{main_8cpp_a8d01d3bd85cacd97e6f8656a54fd9cc4}\index{main.cpp@{main.cpp}!push@{push}}
+\index{push@{push}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{push}{push}}
+{\footnotesize\ttfamily \label{main_8cpp_a8d01d3bd85cacd97e6f8656a54fd9cc4} 
+Task\+Handle\+\_\+t push}
+
+\Hypertarget{main_8cpp_a15966c750c9fb6b2092649b233d249c7}\index{main.cpp@{main.cpp}!queueMutex@{queueMutex}}
+\index{queueMutex@{queueMutex}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{queueMutex}{queueMutex}}
+{\footnotesize\ttfamily \label{main_8cpp_a15966c750c9fb6b2092649b233d249c7} 
+Semaphore\+Handle\+\_\+t queue\+Mutex}
+
+\Hypertarget{main_8cpp_a0612135e618b46403ca6b9a6e996093f}\index{main.cpp@{main.cpp}!queues@{queues}}
+\index{queues@{queues}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{queues}{queues}}
+{\footnotesize\ttfamily \label{main_8cpp_a0612135e618b46403ca6b9a6e996093f} 
+Queue\+Handle\+\_\+t queues}
+
+\Hypertarget{main_8cpp_a587ba0cb07f02913598610049a3bbb79}\index{main.cpp@{main.cpp}!ssid@{ssid}}
+\index{ssid@{ssid}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{ssid}{ssid}}
+{\footnotesize\ttfamily \label{main_8cpp_a587ba0cb07f02913598610049a3bbb79} 
+const char\texorpdfstring{$\ast$}{*} ssid = "{}NDRS-\/Wongsawang"{}}
+
+\Hypertarget{main_8cpp_a153935e13b871590c5521d1b258d017f}\index{main.cpp@{main.cpp}!url@{url}}
+\index{url@{url}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{url}{url}}
+{\footnotesize\ttfamily \label{main_8cpp_a153935e13b871590c5521d1b258d017f} 
+char url\mbox{[}128\mbox{]}}
+
